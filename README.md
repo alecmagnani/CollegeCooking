@@ -5,6 +5,8 @@ The program allows the user to put in ingredients they have and any search terms
 
 Possible functionality to add:
 
-  1. GUI
+  1. GUI or better usability from command line
   
-  2. running list of ingredients available so the program can search what the user already has and return a shopping list of missing ingredients
+  2. Running list of ingredients available so the program can search what the user already has and return a shopping list of missing ingredients
+  
+  3. More recipes at a time (currently 10 since the search returns 10 per page)
