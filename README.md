@@ -5,5 +5,5 @@ The program allows the user to put in ingredients they have and any search terms
 
 Possible functionality to add:
 
-  GUI
-  running list of ingredients available so the program can search what the user already has and return a shopping list of missing ingredients
+  *GUI
+  *running list of ingredients available so the program can search what the user already has and return a shopping list of missing ingredients
