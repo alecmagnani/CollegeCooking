@@ -108,9 +108,7 @@ while True:
                 search_query = None
 
         if success == True:
-            number = randint(0, Recipe.recipeCount)
-            print "random number is... " + str(number)
-            print "there are " + str(Recipe.recipeCount) + " recipes in your recipe book"
+            number = randint(0, Recipe.recipeCount - 1)
             print""
             recipes[number].display()
 
