@@ -1,21 +1,22 @@
+from recipe import Recipe
 from random import randint
 import sys
 import urllib2
 import webbrowser
 
-class Recipe:
-    recipeCount = 0;
+# class Recipe:
+    # recipeCount = 0;
 
-    def __init__(self, title, link, ingredients):
-        self.title = title
-        self.link = link
-        self.ingredients = ingredients
-        Recipe.recipeCount += 1
+    # def __init__(self, title, link, ingredients):
+        # self.title = title
+        # self.link = link
+        # self.ingredients = ingredients
+        # Recipe.recipeCount += 1
 
-    def display(self):
-        print "Title: " + self.title
-        print "Link: " + self.link
-        print "Ingredients: " + self.ingredients
+    # def display(self):
+        # print "Title: " + self.title
+        # print "Link: " + self.link
+        # print "Ingredients: " + self.ingredients
 
 def generateURL(search_query, search_ingredients = [], *args):
     url = "http://www.recipepuppy.com/api?"
