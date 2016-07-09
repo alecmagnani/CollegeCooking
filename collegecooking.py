@@ -4,32 +4,24 @@ import sys
 import urllib2
 import webbrowser
 
-# class Recipe:
-    # recipeCount = 0;
-
-    # def __init__(self, title, link, ingredients):
-        # self.title = title
-        # self.link = link
-        # self.ingredients = ingredients
-        # Recipe.recipeCount += 1
-
-    # def display(self):
-        # print "Title: " + self.title
-        # print "Link: " + self.link
-        # print "Ingredients: " + self.ingredients
-
 def generateURL(search_query, search_ingredients = [], *args):
+    # basic search url
     url = "http://www.recipepuppy.com/api?"
+    
+    # add search ingredients
     if len(search_ingredients) > 0:
         url = url + "i="
+
         for x in range(0, len(search_ingredients)):
             url = url + search_ingredients[x]
+
             if x < len(search_ingredients) - 1:
                 url = url + ","
+
+    # add search query
     if search_query != None:
         url = url + "&q=" + search_query
 
-    print url
     return url
 
 search_ingredients = []
@@ -49,6 +41,7 @@ while True:
     user_choice = raw_input("> ")
     print ""
 
+    # Add search ingredients
     if user_choice == "1":
         print "Enter ingredients you would like to use"
         print "To stop adding ingredients, leave the prompt empty and press ENTER"
@@ -59,11 +52,13 @@ while True:
             else:
                 search_ingredients.append(ingr)
 
+    # Add search query
     elif user_choice == "2":
         print "Enter a search query"
         query = raw_input("> ")
         search_query = query
 
+    # Search for recipes
     elif user_choice == "3":
         url = generateURL(search_query, search_ingredients)
         response = urllib2.urlopen(url)
@@ -96,7 +91,6 @@ while True:
 
                 recipe = Recipe(title[1], link[1], ingredients[1])
                 recipes.append(recipe)
-
                 success = True
 
             except IndexError:
@@ -109,22 +103,25 @@ while True:
                 search_query = None
 
         if success == True:
+
             number = randint(0, Recipe.recipeCount - 1)
             print""
             recipes[number].display()
-
             print ""
             print "Look interesting? Press ENTER to open the recipe, press anything else to keep moving"
             response = raw_input("> ")
-            if not response:
-                #open
-                print "opening..."
+            if not response: #input was an ENTER
+                print "Opening recipe in browser"
                 webbrowser.open_new_tab(recipes[number].link)
 
+            # Reset the recipe counter
             Recipe.recipeCount = 0
 
     elif user_choice == "4":
+        # Reset search terms and recipe counter
         search_ingredients = []
         search_query = None
+        Recipe.recipeCount = 0
+
     elif user_choice == "5":
         sys.exit()
