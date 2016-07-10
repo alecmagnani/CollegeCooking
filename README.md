@@ -1,10 +1,10 @@
 # CollegeCooking
-A basic recipe program utilizing the Recipe Puppy API (http://www.recipepuppy.com/about/api/) and urllib for Python
+A basic recipe program utilizing the Recipe Puppy API (http://www.recipepuppy.com/about/api/) and urllib for Python 3
 
-The program allows the user to put in ingredients they have and any search terms (both are optional), and returns a random recipe. If the user likes what they see, they can open the recipe in their browser.
+The program keeps track of what ingredients are available, and can search for recipes that include those ingredients, do a random search, or search with a keyword. The program then collects hundreds of recipes and selects one at random. The user can select it, at which point the program opens the recipe in the browser and simultaneously produces a "shopping list" of missing ingredients, or the user can pass on that recipe and view a different one. 
 
-Possible functionality to add:
+To do:
 
   1. GUI or better usability from command line
   
-  2. Running list of ingredients available so the program can search what the user already has and return a shopping list of missing ingredients
+  2. Speed up the search. Possibly reduce the number of pages searched at a time, 100 pages might be overkill.
