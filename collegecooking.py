@@ -1,141 +1,244 @@
-from recipe import Recipe
-from random import randint
 import sys
-import urllib2
+import xml.etree.ElementTree as ET
+import urllib.request
 import webbrowser
+from random import randint
+from recipe import Recipe
 
-def generateURL(page, search_query, search_ingredients = [], *args):
-    # basic search url
-    url = "http://www.recipepuppy.com/api?"
-    # add search ingredients
-    if len(search_ingredients) > 0:
+def jsonparse(json):
+    split = json.decode('utf8').split("[")
+    raw_recipes = split[1]
+    raw_recipes = raw_recipes.strip("]")
+
+    individuals = raw_recipes.split("},{")
+    for recipe in individuals:
+        recipe = recipe.strip("{")
+        recipe = recipe.strip("}")
+        recipe = recipe.split( '","' )
+        
+        title = recipe[0]
+        link = recipe[1]
+        ingredients = recipe[2]
+
+        title = title.split('":"')
+        link = link.split('":"')
+        ingredients = ingredients.split('":"')
+        link[1] = link[1].replace("\\", "")
+
+        recipe = Recipe(title[1], link[1], ingredients[1])
+        recipes.append(recipe)
+
+    return recipes
+
+def main(usr, query, ingredients = [], recipes = [], allRecipes = [], ingrRecipes = [], *args):
+    query = query
+    ingredients = ingredients
+    recipes = recipes
+
+    if usr == 0:
+        print("1. add ingredients")
+        print("2. add search term")
+        print("3. search w/ ingredients")
+        print("4. search random")
+        print("5. reset")
+        print("6. exit")
+        usr = input("> ")
+        print("")
+
+    if usr == "1":
+        ingrRecipes = []
+        displayIngredients("ingredients.txt")
+        ingredients = getIngredients()
+        writeIngredients("ingredients.txt", ingredients)
+        main(0, query, ingredients, recipes, allRecipes, ingrRecipes)
+
+    elif usr == "2":
+        query = getQuery()
+        main(0, query, ingredients, recipes, allRecipes, ingrRecipes)
+
+    elif usr == "3":
+        if len(ingrRecipes) == 0:
+            ingredients = importIngredients("ingredients.txt")
+            url = getIngredientSearchURL(query, ingredients)
+        ingrRecipes = ingredientSearch(url)
+        recipe = getRandomRecipe(ingrRecipes)
+        recipe.display()
+        choice = prompt(recipe)
+
+        if choice == "1":
+            select(recipe)
+        elif choice == "2":
+            main(3, query, ingredients, recipes, allRecipes, ingrRecipes)
+        else:
+            main(0, query, ingredients, recipes, allRecipes, ingrRecipes)
+
+    elif usr == "4":
+        if len(allRecipes) == 0:
+            url = getRandomSearchURL(query)
+            allRecipes = randomSearch(url)
+        recipe = getRandomRecipe(allRecipes)
+        recipe.display()
+        choice = prompt(recipe)
+        
+        if choice == "1":
+            select(recipe)
+        elif choice == "2":
+            main(4, query, ingredients, recipes, allRecipes, ingrRecipes)
+        else:
+            main(0, query, ingredients, recipes, allRecipes, ingrRecipes)
+        
+    elif usr == "5":
+        reset()
+        main(0, query, ingredients, recipes, allRecipes, ingrRecipes)
+
+    elif usr == "6":
+        sys.exit()
+
+    else:
+        main(0, query, ingredients, recipes, allRecipes, ingrRecipes)
+
+def getIngredientSearchURL(query, ingredients = [], *args):
+    url = "http://recipepuppy.com/api?"
+    if len(ingredients) > 0:
         url = url + "i="
-        for x in range(0, len(search_ingredients)):
-            url = url + search_ingredients[x]
-            if x < len(search_ingredients) - 1:
+        for x in range(0, len(ingredients)):
+            url = url + ingredients[x].strip()
+            if x < (len(ingredients) - 1):
                 url = url + ","
-    # add search query
-    if search_query != None:
-        url = url + "&q=" + search_query
+    if (query != None) and (query != "") and (query != " "):
+        url = url + "&q=" + query
 
-    if page != 0:
-        url = url + "&p=" + str(page)
+    print("Searching: " + url)
+    print("")
     return url
 
-def getRecipes(page, search_query, search_ingredients = [], recipes = [], *args):
-        url = generateURL(page, search_query, search_ingredients)
+def displayIngredients(filename):
+    file = open(filename, 'r')
+    print("Current Ingredients:")
+    for line in file:
+        print(line.strip())
+    file.close()
+    
+def getRandomSearchURL(query):
+    url = "http://recipepuppy.com/api?"
+    if (query != None) and (query != "") and (query != " "):
+        url = url + "&q" + query
+    print("Searching: " + url)
+    return url
 
-        response = urllib2.urlopen(url)
-        json = response.read()
-
-        # get rid of API header
-        raw_recipes = json.split("[")[1]
-        raw_recipes = raw_recipes.translate(None, "]")
-
-        # split into individual recipes
-        individuals = raw_recipes.split("},{")
-        for recipe in individuals:
-            recipe = recipe.translate(None, "{")
-            recipe = recipe.translate(None, "}")
-
-            # split recipe into segments (title, link, ingredients)
-            recipe = recipe.split('","')
-            try:
-                title = recipe[0]
-                link = recipe[1]
-                ingredients = recipe[2]
-
-                # split to remove extra characters, create recipe
-                title = title.split('":"')
-                link = link.split('":"')
-                link[1] = link[1].translate(None, "\\")
-                ingredients = ingredients.split('":"')
-
-                recipe = Recipe(title[1], link[1], ingredients[1])
-                recipes.append(recipe)
-            except:
-                return recipes
-
-        getRecipes(page + 1, search_query, search_ingredients, recipes) 
-        return recipes
-
-def getRandom(recipes):
+def getRandomRecipe(recipes = [], *args):
     num = randint(0, len(recipes) - 1)
     return recipes[num]
 
-if __name__ == "__main__":
-
-    allRecipes = []
-    recipes = []
-    search_ingredients = []
-    search_query = None
-    url = None
-
+def getIngredients():
+    ingredients = []
+    print("Enter ingredients, leave empty to exit")
     while True:
-        print ""
-        print "Welcome to the College Cookbook"
-        print ""
-        print "Press 1 to add specific ingredients"
-        print "Press 2 to add a specific search term"
-        print "Press 3 to grab a recipe"
-        print "Press 4 to reset ingredients and search term"
-        print "Press 5 to quit"
+        search_ingredient = input("> ")
+        if not search_ingredient:
+            break
+        else:
+            ingredients.append(search_ingredient)
+    return ingredients
 
-        user_choice = raw_input("> ")
-        print ""
+def getQuery():
+    print("Enter search term:")
+    query = input("> ")
+    return query
 
-        # Add search ingredients
-        if user_choice == "1":
-            print "Enter ingredients you would like to use"
-            print "To stop adding ingredients, leave the prompt empty and press ENTER"
-            while True:
-                ingr = raw_input("> ")
-                if ingr == "":
-                    break;
-                else:
-                    search_ingredients.append(ingr)
+def ingredientSearch(url):
+    ingredient_recipes = []
+    for x in range(1, 101):
+        try:
+            url = url + "&p=" + str(x)
+            request = urllib.request.Request(url)
+            result = urllib.request.urlopen(request)
+            json = result.read()
+            recipes = jsonparse(json)
+            for recipe in recipes:
+                ingredient_recipes.append(recipe)
+        except:
+            pass
 
-        # Add search query
-        elif user_choice == "2":
-            print "Enter a search query"
-            query = raw_input("> ")
-            search_query = query
+    print("Finished search on page " + str(x))
+    print("Collected " + str(Recipe.recipeCount) + " recipes")
+    return ingredient_recipes
 
-        # Search for recipes
-        elif user_choice == "3":
-            if len(allRecipes) == 0:
-                print("Loading recipes...")
-                allRecipes = getRecipes(0, search_query, search_ingredients, recipes)
-                recipe = getRandom(allRecipes)
-            else:
-                recipe = getRandom(allRecipes)
+def randomSearch(url):
+    all_recipes = []
+    request = urllib.request.Request(url)
+    result = urllib.request.urlopen(request)
+    json = result.read()
 
-            print ""
-            print "Picked from " + str(Recipe.recipeCount) + " recipes:"
-            recipe.display()
-            while True:
-                print ""
-                print "Does this look interesting?"
-                print "Press 1 to open"
-                print "Press 2 to grab a new recipe"
-                print "Press any other key to go to the menu"
-                print ""
-                choice = raw_input("> ")
-                if choice == "1":
-                    webbrowser.open_new_tab(recipe.link)
-                    break
-                elif choice == "2":
-                    recipe = getRandom(allRecipes)
-                    recipe.display()
-                else:
-                    break
+    for x in range(1, 101):
+        try:
+            url = url + "&p=" + str(x)
+            request = urllib.request.Request(url)
+            result = urllib.request.urlopen(request)
+            json = result.read()
+            recipes = jsonparse(json)
+            for recipe in recipes:
+                all_recipes.append(recipe)
+        except:
+            pass
 
-        elif user_choice == "4":
-            allRecipes = []
-            recipes = []
-            search_ingredients = []
-            search_query = None
-            Recipe.recipeCount = 0
+    print("Finished search on page " + str(x))
+    print("Collected " + str(Recipe.recipeCount) + " recipes")
+    return all_recipes
 
-        elif user_choice == "5":
-            sys.exit()
+def reset():
+    query = None
+    ingredients = deleteIngredients("ingredients.txt")
+
+def writeIngredients(filename, ingredients):
+    file = open(filename, 'a')
+    old = importIngredients(filename)
+    for i in ingredients:
+        if i not in old:
+            file.write(i + "\n")
+
+def importIngredients(filename):
+    user_ingredients = []
+    file = open(filename, 'r')
+    for line in file:
+        line = line.strip()
+        user_ingredients.append(line)
+    file.close()
+    return user_ingredients
+
+def deleteIngredients(filename):
+    file = open(filename, 'w')
+    file.close()
+
+def prompt(recipe):
+    print("Look interesting?")
+    print("Press 1 to open in browser and make shopping list")
+    print("Press 2 to see a different recipe")
+    print("Press any other button to go to the menu")
+    choice = input("> ")
+    return choice
+
+def select(recipe):
+    file = open("shoppinglist.txt", 'w')
+    webbrowser.open_new_tab(recipe.link)
+    user_ingredients = importIngredients("ingredients.txt")
+    recipe_ingredients = recipe.ingredients.split(", ")
+    
+    for ingredient in recipe_ingredients:
+        if ingredient not in user_ingredients:
+            file.write(ingredient + "\n")
+    file.close()
+
+    file = open("shoppinglist.txt", 'r')
+    print("Shopping list complete! You need:")
+    for line in file:
+        print(line.strip())
+
+query = None
+ingredients = importIngredients("ingredients.txt")
+recipes = []
+allRecipes = []
+ingrRecipes = []
+
+if __name__ == "__main__":
+    main(0, query, ingredients, recipes, allRecipes, ingrRecipes)
