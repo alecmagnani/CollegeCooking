@@ -8,6 +8,6 @@ class Recipe:
         Recipe.recipeCount += 1
 
     def display(self):
-        print "Title: " + self.title
-        print "Link: " + self.link
-        print "Ingredients: " + self.ingredients
+        print("Title: " + self.title)
+        print("Link: " + self.link)
+        print("Ingredients: " + self.ingredients)
