@@ -35,15 +35,15 @@ def main(query, ingredients = [], recipes = [], allRecipes = [], ingrRecipes = [
     ingredients = ingredients
     recipes = recipes
 
-    if usr == 0:
-        print("1. add ingredients")
-        print("2. add search term")
-        print("3. search w/ ingredients")
-        print("4. search random")
-        print("5. reset")
-        print("6. exit")
-        usr = input("> ")
-        print("")
+    print("1. add ingredients")
+    print("2. add search term")
+    print("3. search w/ ingredients")
+    print("4. search random")
+    print("5. reset")
+    print("6. exit")
+
+    usr = input("> ")
+    print("")
 
     if usr == "1":
         ingrRecipes = []
@@ -154,7 +154,7 @@ def getQuery():
 
 def ingredientSearch(url):
     ingredient_recipes = []
-    for x in range(1, 101):
+    for x in range(1, 30):
         try:
             url = url + "&p=" + str(x)
             request = urllib.request.Request(url)
@@ -176,7 +176,7 @@ def randomSearch(url):
     result = urllib.request.urlopen(request)
     json = result.read()
 
-    for x in range(1, 101):
+    for x in range(1, 30):
         try:
             url = url + "&p=" + str(x)
             request = urllib.request.Request(url)
