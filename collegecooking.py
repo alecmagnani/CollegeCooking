@@ -30,7 +30,7 @@ def jsonparse(json):
 
     return recipes
 
-def main(usr, query, ingredients = [], recipes = [], allRecipes = [], ingrRecipes = [], *args):
+def main(query, ingredients = [], recipes = [], allRecipes = [], ingrRecipes = [], *args):
     query = query
     ingredients = ingredients
     recipes = recipes
@@ -50,52 +50,58 @@ def main(usr, query, ingredients = [], recipes = [], allRecipes = [], ingrRecipe
         displayIngredients("ingredients.txt")
         ingredients = getIngredients()
         writeIngredients("ingredients.txt", ingredients)
-        main(0, query, ingredients, recipes, allRecipes, ingrRecipes)
+        main(query, ingredients, recipes, allRecipes, ingrRecipes)
 
     elif usr == "2":
         query = getQuery()
-        main(0, query, ingredients, recipes, allRecipes, ingrRecipes)
+        main(query, ingredients, recipes, allRecipes, ingrRecipes)
 
     elif usr == "3":
         if len(ingrRecipes) == 0:
             ingredients = importIngredients("ingredients.txt")
             url = getIngredientSearchURL(query, ingredients)
-        ingrRecipes = ingredientSearch(url)
-        recipe = getRandomRecipe(ingrRecipes)
-        recipe.display()
-        choice = prompt(recipe)
+            ingrRecipes = ingredientSearch(url)
 
-        if choice == "1":
-            select(recipe)
-        elif choice == "2":
-            main(3, query, ingredients, recipes, allRecipes, ingrRecipes)
-        else:
-            main(0, query, ingredients, recipes, allRecipes, ingrRecipes)
+        while True:
+            recipe = getRandomRecipe(ingrRecipes)
+            recipe.display()
+            choice = prompt(recipe)
+
+            if choice == "1":
+                select(recipe)
+                break
+            elif choice == "2":
+                pass    
+            else:
+                break
 
     elif usr == "4":
         if len(allRecipes) == 0:
             url = getRandomSearchURL(query)
             allRecipes = randomSearch(url)
-        recipe = getRandomRecipe(allRecipes)
-        recipe.display()
-        choice = prompt(recipe)
         
-        if choice == "1":
-            select(recipe)
-        elif choice == "2":
-            main(4, query, ingredients, recipes, allRecipes, ingrRecipes)
-        else:
-            main(0, query, ingredients, recipes, allRecipes, ingrRecipes)
+        while True:
+            recipe = getRandomRecipe(allRecipes)
+            recipe.display()
+            choice = prompt(recipe)
+            
+            if choice == "1":
+                select(recipe)
+                break
+            elif choice == "2":
+                pass
+            else:
+                break
         
     elif usr == "5":
         reset()
-        main(0, query, ingredients, recipes, allRecipes, ingrRecipes)
+        main(query, ingredients, recipes, allRecipes, ingrRecipes)
 
     elif usr == "6":
         sys.exit()
 
     else:
-        main(0, query, ingredients, recipes, allRecipes, ingrRecipes)
+        main(query, ingredients, recipes, allRecipes, ingrRecipes)
 
 def getIngredientSearchURL(query, ingredients = [], *args):
     url = "http://recipepuppy.com/api?"
@@ -241,4 +247,4 @@ allRecipes = []
 ingrRecipes = []
 
 if __name__ == "__main__":
-    main(0, query, ingredients, recipes, allRecipes, ingrRecipes)
+    main(query, ingredients, recipes, allRecipes, ingrRecipes)
