@@ -10,11 +10,12 @@ def main(query, ingredients = [], recipes = [], allRecipes = [], ingrRecipes = [
     ingredients = ingredients
     recipes = recipes
 
-    print("1. add ingredients")
+    print("")
+    print("1. add ingredients to search with")
     print("2. add search term")
-    print("3. search w/ ingredients")
-    print("4. search random")
-    print("5. reset")
+    print("3. search with current ingredients")
+    print("4. search all recipes")
+    print("5. reset search term and ingredients")
     print("6. exit")
 
     usr = input("> ")
@@ -123,6 +124,7 @@ def getRandomSearchURL(query):
     if (query != None) and (query != "") and (query != " "):
         url = url + "&q" + query
     print("Searching: " + url)
+    print("")
     return url
 
 def ingredientSearch(url):
@@ -139,8 +141,8 @@ def ingredientSearch(url):
         except:
             pass
 
-    print("Finished search on page " + str(x))
-    print("Collected " + str(Recipe.recipeCount) + " recipes")
+    print("Finished search on page " + str(x) + ", selecting from " + str(Recipe.recipeCount) + " recpipes")
+    print("")
     return ingredient_recipes
 
 def randomSearch(url):
