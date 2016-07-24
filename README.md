@@ -5,6 +5,4 @@ The program keeps track of what ingredients are available, and can search for re
 
 To do:
 
-  1. GUI or better usability from command line
-  
-  2. Speed up the search. Possibly reduce the number of pages searched at a time, 100 pages might be overkill.
+  Improve GUI functionality/usability
