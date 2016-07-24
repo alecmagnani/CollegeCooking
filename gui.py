@@ -50,8 +50,8 @@ class Home(QWidget):
         grid.addWidget(titleLabel, 1, 1)
         grid.addWidget(ingredientsLabel, 2, 1)
 
-        grid.addWidget(self.title, 1, 2, 5, 1)
-        grid.addWidget(self.ingredients, 2, 2, 5, 1)
+        grid.addWidget(self.title, 1, 2)
+        grid.addWidget(self.ingredients, 2, 2)
 
         grid.addWidget(selectButton, 3, 2)
         # grid.addWidget(nextButton, 3, 3)

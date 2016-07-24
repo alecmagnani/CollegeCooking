@@ -129,7 +129,9 @@ def getRandomSearchURL(query):
 
 def ingredientSearch(url):
     ingredient_recipes = []
-    for x in range(1, 2):
+    pageMin = randint(1, 90)
+    pageMax = pageMin + 5
+    for x in range(pageMin, pageMax):
         try:
             url = url + "&p=" + str(x)
             request = urllib.request.Request(url)
@@ -141,7 +143,7 @@ def ingredientSearch(url):
         except:
             pass
 
-    print("Finished search on page " + str(x) + ", selecting from " + str(Recipe.recipeCount) + " recpipes")
+    print("Searching pages " + str(pageMin) + " through " + str(pageMax))
     print("")
     return ingredient_recipes
 
@@ -151,7 +153,9 @@ def randomSearch(url):
     result = urllib.request.urlopen(request)
     json = result.read()
 
-    for x in range(1, 2):
+    pageMin = randint(1, 90)
+    pageMax = pageMin + 5
+    for x in range(pageMin, pageMax):
         try:
             url = url + "&p=" + str(x)
             request = urllib.request.Request(url)
@@ -163,8 +167,8 @@ def randomSearch(url):
         except:
             pass
 
-    print("Finished search on page " + str(x))
-    print("Collected " + str(Recipe.recipeCount) + " recipes")
+    print("Searching pages " + str(pageMin) + " through " + str(pageMax))
+    print("")
     return all_recipes
 
 def getRandomRecipe(recipes = [], *args):
