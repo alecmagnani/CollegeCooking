@@ -202,7 +202,7 @@ def writeIngredients(filename, ingredients):
     file = open(filename, 'a')
     old = importIngredients(filename)
     for i in ingredients:
-        if i not in old:
+        if (i not in old) and (i != " ") and (i != "") and (i != None):
             file.write(i + "\n")
 
 def importIngredients(filename):
