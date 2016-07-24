@@ -129,7 +129,7 @@ def getRandomSearchURL(query):
 
 def ingredientSearch(url):
     ingredient_recipes = []
-    for x in range(1, 30):
+    for x in range(1, 2):
         try:
             url = url + "&p=" + str(x)
             request = urllib.request.Request(url)
@@ -151,7 +151,7 @@ def randomSearch(url):
     result = urllib.request.urlopen(request)
     json = result.read()
 
-    for x in range(1, 30):
+    for x in range(1, 2):
         try:
             url = url + "&p=" + str(x)
             request = urllib.request.Request(url)
