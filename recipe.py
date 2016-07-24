@@ -1,4 +1,5 @@
 class Recipe:
+
     recipeCount = 0;
 
     def __init__(self, title, link, ingredients):

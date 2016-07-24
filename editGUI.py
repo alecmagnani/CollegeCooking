@@ -6,12 +6,10 @@ from PyQt5.QtWidgets import (QWidget, QApplication, QTextEdit, QGridLayout, QPus
 
 class Edit(QWidget):
 
-    def __init__(self):
+    def __init__(self, filename):
         super().__init__()
 
-        self.initUI()
-
-    def initUI(self):
+        self.filename = filename
 
         saveButton = QPushButton("Save")
         cancelButton = QPushButton("Cancel")
@@ -33,7 +31,7 @@ class Edit(QWidget):
         self.setWindowTitle("My Ingredients")
 
     def loadIngredients(self):
-        ingredients = collegecooking.importIngredients("ingredients.txt")
+        ingredients = collegecooking.importIngredients(self.filename)
 
         for i in ingredients:
             if (i != " ") and (i != "") and (i != None):
@@ -44,8 +42,8 @@ class Edit(QWidget):
     def save(self):
         text = self.ingredientEdit.toPlainText()
         ingredients = text.split('\n')
-        collegecooking.deleteIngredients("ingredients.txt")
-        collegecooking.writeIngredients("ingredients.txt", ingredients)
+        collegecooking.deleteIngredients(self.filename)
+        collegecooking.writeIngredients(self.filename, ingredients)
         self.close()
 
     def cancel(self):
