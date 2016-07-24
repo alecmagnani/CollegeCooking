@@ -1,11 +1,7 @@
-basil
-green beans
-green pepper
-kielbasa
-ground beef
-oregano
-parmesan cheese
-black pepper
-olives
-red wine
-thyme
+flour
+honey
+salt
+vegetable oil
+water
+flour
+yeast

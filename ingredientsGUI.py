@@ -2,7 +2,7 @@ import sys
 import collegecooking
 from recipe import Recipe
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (QWidget, QApplication, QTextEdit, QGridLayout, QPushButton, QToolTip)
+from PyQt5.QtWidgets import (QWidget, QApplication, QTextEdit, QGridLayout, QPushButton)
 
 class Edit(QWidget):
 

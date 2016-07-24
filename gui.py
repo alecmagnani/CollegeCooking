@@ -93,6 +93,8 @@ class Home(QWidget):
             print("No recipe selected")
         else:
             home.currentRecipe.display()
+            print("")
+            collegecooking.select(home.currentRecipe)
 
 
 if __name__ == '__main__':
