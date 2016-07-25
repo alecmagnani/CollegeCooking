@@ -1,6 +1,6 @@
 import sys
 import collegecooking
-import ingredientsGUI
+import editGUI
 from recipe import Recipe
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QWidget, QLabel, QGridLayout, QApplication, QPushButton, QToolTip)
@@ -63,8 +63,8 @@ class Home(QWidget):
         self.show()
 
     def edit(self):
-        self.editUI = ingredientsGUI.Edit("ingredients.txt")
-        self.editUI.show()
+        self.ingredientsUI = editGUI.Edit("ingredients.txt")
+        self.ingredientsUI.show()
 
     def ingrSearch(self):
 
@@ -74,7 +74,8 @@ class Home(QWidget):
         recipe = collegecooking.getRandomRecipe(ingredient_recipes)
         
         home.currentRecipe = recipe
-        home.title.setText('''<a href='''+recipe.link+'''>'''+recipe.title +'''</a>''')
+        home.title.setText('''<a href='''+recipe.link+'''>'''+ recipe.title +'''</a>''')
+        print(recipe.title)
         home.ingredients.setText(recipe.ingredients)
         home.title.repaint()
         home.ingredients.repaint()
@@ -98,6 +99,9 @@ class Home(QWidget):
             home.currentRecipe.display()
             print("")
             collegecooking.select(home.currentRecipe)
+            self.shoppinglistUI = editGUI.Edit("shoppinglist.txt")
+            self.shoppinglistUI.show()
+
 
     def exit(self):
         self.close()

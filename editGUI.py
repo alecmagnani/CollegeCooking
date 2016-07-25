@@ -28,7 +28,12 @@ class Edit(QWidget):
 
         self.setLayout(grid)
         self.setGeometry(800, 600, 350, 300)
-        self.setWindowTitle("My Ingredients")
+        if filename == "ingredients.txt":
+            self.setWindowTitle("My Ingredients")
+        elif filename == "shoppinglist.txt":
+            self.setWindowTitle("Shopping List")
+        else:
+            self.setWindowTitle(filename)
 
     def loadIngredients(self):
         ingredients = collegecooking.importIngredients(self.filename)
