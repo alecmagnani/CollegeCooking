@@ -5,7 +5,9 @@ A GUI can be launched with "python3 gui.py", or as a command line tool with "pyt
 
 This program seeks to help the indecisive chef by taking the decision making out of answering the question "What's for Dinner?". It uses the RecipePuppy API to generate recipes either at random, or based on a list of ingredients specified by the user. The user can open the recipe in their browser, and also select the recipe, which generates a shopping list of ingredients not found in their ingredients list.
 
-![Main Screen](/screenshots/main.png?raw=true "This is the screen upon opening the program")
+![Main Screen](/screenshots/recipe.png?raw=true "Screen after the program has generated a recipe")
+![Ingredients](/screenshots/ingredients.png?raw=true "Add, edit, or remove ingredients from your list")
+![Shopping List](/screenshots/shoppinglist.png?raw=true "Automatically generates a shopping list once a recipe is selected")
 
 The program consists of the following files:
 
