@@ -5,6 +5,7 @@ import webbrowser
 from random import randint
 from recipe import Recipe
 
+# Main loop for command line version of program
 def main(query, ingredients = [], recipes = [], allRecipes = [], ingrRecipes = [], *args):
     query = query
     ingredients = ingredients
@@ -79,6 +80,9 @@ def main(query, ingredients = [], recipes = [], allRecipes = [], ingrRecipes = [
     else:
         main(query, ingredients, recipes, allRecipes, ingrRecipes)
 
+# The API returns one page of 10 recipes at a time in JSON
+# This method separates the page of text into individual recipes
+# A recipe consists of a title, a link, and a list of ingredients (see recipe.py for Recipe class)
 def jsonparse(json):
     split = json.decode('utf8').split("[")
     raw_recipes = split[1]
@@ -104,6 +108,7 @@ def jsonparse(json):
 
     return recipes
 
+# generates a url containing the search query (if applicable) and all user ingredients from 'ingredients.txt'
 def getIngredientSearchURL(query, ingredients = [], *args):
     url = "http://recipepuppy.com/api?"
     if len(ingredients) > 0:
@@ -119,6 +124,7 @@ def getIngredientSearchURL(query, ingredients = [], *args):
     print("")
     return url
 
+# generates a url containing the search query (if applicable) and no ingredients
 def getRandomSearchURL(query):
     url = "http://recipepuppy.com/api?"
     if (query != None) and (query != "") and (query != " "):
@@ -127,11 +133,14 @@ def getRandomSearchURL(query):
     print("")
     return url
 
+# picks a random selection of 5 pages out of 100+ (~50 recipes)
+# and returns a list of those recipes
 def ingredientSearch(url):
     ingredient_recipes = []
-    pageMin = randint(1, 90)
+    pageMin = randint(1, 95)
     pageMax = pageMin + 5
     for x in range(pageMin, pageMax):
+        # the try/except handles the blank pages that sometimes occur
         try:
             url = url + "&p=" + str(x)
             request = urllib.request.Request(url)
@@ -147,6 +156,8 @@ def ingredientSearch(url):
     print("")
     return ingredient_recipes
 
+# picks a random selection of 5 pages out of 100+ (~50 recipes)
+# and returns a list of those recipes
 def randomSearch(url):
     all_recipes = []
     request = urllib.request.Request(url)
@@ -171,15 +182,18 @@ def randomSearch(url):
     print("")
     return all_recipes
 
+# picks a random recipe from a given list of recipes
 def getRandomRecipe(recipes = [], *args):
     num = randint(0, len(recipes) - 1)
     return recipes[num]
 
+# get the user search query
 def getQuery():
     print("Enter search term:")
     query = input("> ")
     return query
 
+# get the user ingredients, save in 'ingredients.txt'
 def getIngredients():
     ingredients = []
     print("Enter ingredients, leave empty to exit")
@@ -191,6 +205,7 @@ def getIngredients():
             ingredients.append(search_ingredient)
     return ingredients
 
+# display all ingredients from 'ingredients.txt'
 def displayIngredients(filename):
     file = open(filename, 'r')
     print("Current Ingredients:")
@@ -198,6 +213,7 @@ def displayIngredients(filename):
         print(line.strip())
     file.close()
 
+# write ingredients to 'ingredients.txt'
 def writeIngredients(filename, ingredients):
     file = open(filename, 'a')
     old = importIngredients(filename)
@@ -205,6 +221,7 @@ def writeIngredients(filename, ingredients):
         if (i not in old) and (i != " ") and (i != "") and (i != None):
             file.write(i + "\n")
 
+# open ingredients and return as a list
 def importIngredients(filename):
     user_ingredients = []
     file = open(filename, 'r')
@@ -214,10 +231,13 @@ def importIngredients(filename):
     file.close()
     return user_ingredients
 
+# clear ingredients.txt
 def deleteIngredients(filename):
     file = open(filename, 'w')
     file.close()
 
+# after the recipe is displayed to the user (recipe.display())
+# prompt the user for an action
 def prompt(recipe):
     print("Look interesting?")
     print("Press 1 to open in browser and make shopping list")
@@ -226,11 +246,16 @@ def prompt(recipe):
     choice = input("> ")
     return choice
 
+# if the recipe is selected (user inputs 1 at prompt above)
+# open the recipe in browser (if the program is being run as a command line tool)
+# either way, generate a shopping list containing all ingredients that the user does not already have
 def select(recipe):
     file = open("shoppinglist.txt", 'w')
-    # CHANGE BELOW IF YOU WANT THE GUI TO OPEN BROWSER UPON SELECT
+
+    # Only open in browser if the program is being run from command line, not in GUI form
     if __name__ == "__main__":
         webbrowser.open_new_tab(recipe.link)
+
     user_ingredients = importIngredients("ingredients.txt")
     recipe_ingredients = recipe.ingredients.split(", ")
     
@@ -244,6 +269,7 @@ def select(recipe):
     for line in file:
         print(line.strip())
 
+# reset query and ingredients
 def reset():
     query = None
     ingredients = deleteIngredients("ingredients.txt")
