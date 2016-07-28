@@ -1,5 +1,7 @@
 # What's For Dinner?
-A basic recipe program utilizing the Recipe Puppy API (http://www.recipepuppy.com/about/api/) and urllib for Python 3
+A basic recipe program utilizing the Recipe Puppy API (http://www.recipepuppy.com/about/api/)
+
+Written in Python 3, Requires urllib and PyQt5
 
 A GUI can be launched with "python3 gui.py", or a command line tool with "python3 whatsfordinner.py"
 
