@@ -1,5 +1,5 @@
 import sys
-import collegecooking
+import whatsfordinner
 from recipe import Recipe
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QWidget, QApplication, QTextEdit, QGridLayout, QPushButton)
@@ -36,7 +36,7 @@ class Edit(QWidget):
             self.setWindowTitle(filename)
 
     def loadIngredients(self):
-        ingredients = collegecooking.importIngredients(self.filename)
+        ingredients = whatsfordinner.importIngredients(self.filename)
 
         for i in ingredients:
             if (i != " ") and (i != "") and (i != None):
@@ -47,8 +47,8 @@ class Edit(QWidget):
     def save(self):
         text = self.ingredientEdit.toPlainText()
         ingredients = text.split('\n')
-        collegecooking.deleteIngredients(self.filename)
-        collegecooking.writeIngredients(self.filename, ingredients)
+        whatsfordinner.deleteIngredients(self.filename)
+        whatsfordinner.writeIngredients(self.filename, ingredients)
         self.close()
 
     def cancel(self):

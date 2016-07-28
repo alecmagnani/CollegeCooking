@@ -1,9 +1,10 @@
 import sys
-import collegecooking
+import whatsfordinner
 import editGUI
 from recipe import Recipe
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (QWidget, QLabel, QGridLayout, QApplication, QPushButton, QToolTip)
+from PyQt5.QtWidgets import (QWidget, QLabel, QGridLayout, QApplication,
+    QPushButton, QToolTip, QStyleFactory)
 
 class Home(QWidget):
 
@@ -59,7 +60,7 @@ class Home(QWidget):
 
         self.setLayout(grid)
         self.setGeometry(800, 600, 700, 175)
-        self.setWindowTitle("College Cooking")
+        self.setWindowTitle("What's For Dinner?")
         self.show()
 
     def edit(self):
@@ -68,23 +69,22 @@ class Home(QWidget):
 
     def ingrSearch(self):
 
-        ingredients = collegecooking.importIngredients("ingredients.txt")
-        url = collegecooking.getIngredientSearchURL(None, ingredients)
-        ingredient_recipes = collegecooking.ingredientSearch(url)
-        recipe = collegecooking.getRandomRecipe(ingredient_recipes)
+        ingredients = whatsfordinner.importIngredients("ingredients.txt")
+        url = whatsfordinner.getIngredientSearchURL(None, ingredients)
+        ingredient_recipes = whatsfordinner.ingredientSearch(url)
+        recipe = whatsfordinner.getRandomRecipe(ingredient_recipes)
         
         home.currentRecipe = recipe
         home.title.setText('''<a href='''+recipe.link+'''>'''+ recipe.title +'''</a>''')
-        print(recipe.title)
         home.ingredients.setText(recipe.ingredients)
         home.title.repaint()
         home.ingredients.repaint()
 
     def randSearch(self):
 
-        url = collegecooking.getRandomSearchURL(None)
-        all_recipes = collegecooking.randomSearch(url)
-        recipe = collegecooking.getRandomRecipe(all_recipes)
+        url = whatsfordinner.getRandomSearchURL(None)
+        all_recipes = whatsfordinner.randomSearch(url)
+        recipe = whatsfordinner.getRandomRecipe(all_recipes)
 
         home.currentRecipe = recipe
         home.title.setText('''<a href='''+recipe.link+'''>'''+recipe.title +'''</a>''')
@@ -98,7 +98,7 @@ class Home(QWidget):
         else:
             home.currentRecipe.display()
             print("")
-            collegecooking.select(home.currentRecipe)
+            whatsfordinner.select(home.currentRecipe)
             self.shoppinglistUI = editGUI.Edit("shoppinglist.txt")
             self.shoppinglistUI.show()
 
@@ -109,5 +109,6 @@ class Home(QWidget):
 if __name__ == '__main__':
 
     app = QApplication(sys.argv)
+    app.setStyle(QStyleFactory.create("cleanlooks"))
     home = Home()
     sys.exit(app.exec_())

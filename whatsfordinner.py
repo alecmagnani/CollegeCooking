@@ -228,8 +228,9 @@ def prompt(recipe):
 
 def select(recipe):
     file = open("shoppinglist.txt", 'w')
-    # UNCOMMENT BELOW TO OPEN RECIPE UPON SELECT
-    # webbrowser.open_new_tab(recipe.link)
+    # CHANGE BELOW IF YOU WANT THE GUI TO OPEN BROWSER UPON SELECT
+    if __name__ == "__main__":
+        webbrowser.open_new_tab(recipe.link)
     user_ingredients = importIngredients("ingredients.txt")
     recipe_ingredients = recipe.ingredients.split(", ")
     
