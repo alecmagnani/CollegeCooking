@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+	<head>
+		<title>What's for Dinner?</title>
+		<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	</head>
+
+	<body>	
+		<div class="left">
+			<p>YOUR INGREDIENTS</p>
+			<p> tomato </p>
+			<p> garlic </p>
+			<p> pasta </p>
+		</div>
+
+		<div class="main">
+			<h1> {{ recipe.title }} </h1>
+			<p> Ingredients: {{ recipe.ingredients }} </p>
+		</div>	
+	</body>
+</html>
