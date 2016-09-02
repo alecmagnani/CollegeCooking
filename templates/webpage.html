@@ -42,7 +42,7 @@
       .row.content {height:auto;} 
     }
 
-    #submit {
+    #button {
 	    width:9em;
 	}
   </style>
@@ -63,7 +63,7 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Home</a></li>
         <li><a href="#">About</a></li>
-        <li><a href="#">Projects</a></li>
+        <!--<li><a href="#">Projects</a></li>-->
         <li><a href="#">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -83,12 +83,14 @@
 
 	      <form action="." method="POST">
 		      <input type="text" name="Add Ingredient" size="12">
-		      <input type="submit" name="add" value="Add Ingredient" id="submit">
+		      <input type="submit" name="add" value="Add Ingredient" id="button">
 	      </form>
+
+	      <a href="{{ url_for('home') }}"><button>Reset</button></a>
     </div>
     <div class="col-sm-8 text-left"> 
 	    <h2><center> {{recipe.title}} </center></h2>
-      <p> Ingredients: {{recipe.ingredients}} </p>
+	    <p><center> Ingredients: {{recipe.ingredients}} </center></p>
       <hr>
     </div>
     <div class="col-sm-2 sidenav">
@@ -102,9 +104,9 @@
   </div>
 </div>
 
-<!--<footer class="container-fluid text-center">-->
-  <!--<p>Alec Magnani</p>-->
-<!--</footer>-->
+<footer class="container-fluid text-center">
+  <p>Alec Magnani</p>
+</footer>
 
 </body>
 </html>
