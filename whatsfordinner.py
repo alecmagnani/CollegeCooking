@@ -38,9 +38,10 @@ def main(query, ingredients = [], recipes = [], allRecipes = [], ingrRecipes = [
             ingredients = importIngredients("ingredients.txt")
             url = getIngredientSearchURL(query, ingredients)
             ingrRecipes = ingredientSearch(url)
+            scoreRecipes(ingrRecipes, ingredients)
 
         while True:
-            recipe = getRandomRecipe(ingrRecipes)
+            recipe = findBest(ingrRecipes)
             recipe.display()
             choice = prompt(recipe)
 
@@ -209,6 +210,14 @@ def findBest(recipes = [], *args):
 
     # Return the best recipe
     return best
+
+def scoreRecipes(recipes = [], usr_ingredients = [], *args):
+    for recipe in recipes:
+        score = 0
+        for ingredient in usr_ingredients:
+            if ingredient in recipe.ingredients:
+                score += 1
+        recipe.setScore(score)
 
 # get the user search query
 def getQuery():

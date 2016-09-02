@@ -1,2 +1,3 @@
 garlic
-cheddar
+pasta
+tomato

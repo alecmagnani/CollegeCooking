@@ -82,7 +82,8 @@ class Home(QWidget):
         ingredients = whatsfordinner.importIngredients("ingredients.txt")
         url = whatsfordinner.getIngredientSearchURL(None, ingredients)
         ingredient_recipes = whatsfordinner.ingredientSearch(url)
-        recipe = whatsfordinner.getRandomRecipe(ingredient_recipes)
+        whatsfordinner.scoreRecipes(ingredient_recipes, ingredients)
+        recipe = whatsfordinner.findBest(ingredient_recipes)
         
         home.currentRecipe = recipe
         home.title.setText('''<a href='''+recipe.link+'''>'''+ recipe.title +'''</a>''')
