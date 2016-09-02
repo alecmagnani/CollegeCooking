@@ -4,38 +4,47 @@ from flask import (
         render_template,
         redirect,
 )
+from werkzeug.contrib.cache import SimpleCache
 
 import whatsfordinner
 
 app = Flask(__name__)
+usr_ingredients = []
+cache = SimpleCache()
 
 @app.route('/')
 def home(recipe = None, usr_ingredients = None):
-    usr_ingredients = whatsfordinner.importIngredients("ingredients.txt")
+    usr_ingredients = cache.get('usr_ingredients')
     url = whatsfordinner.getIngredientSearchURL(None, usr_ingredients)
-    print(url)
     recipes = whatsfordinner.ingredientSearch(url)
     recipe = whatsfordinner.getRandomRecipe(recipes)
-
-    usr_ingredients = whatsfordinner.importIngredients("ingredients.txt")
 
     return render_template('webpage.html', recipe=recipe, usr_ingredients=usr_ingredients)
 
 @app.route('/', methods=['POST'])
 def home_add_ingredient(recipe=None, usr_ingredients=None):
 
-    ingredient = request.form['Add Ingredient']
-    
-    usr_ingredients = whatsfordinner.importIngredients("ingredients.txt")
-    if ingredient not in usr_ingredients:
-        usr_ingredients.append(ingredient)
-    else:
-        usr_ingredients.remove(ingredient)
-    whatsfordinner.deleteIngredients("ingredients.txt")
-    whatsfordinner.writeIngredients("ingredients.txt", usr_ingredients)
+    if request.form['action'] == "Add Ingredient":
+        ingredient = request.form['Add Ingredient']
+        
+        usr_ingredients = cache.get('usr_ingredients')
+        if usr_ingredients == None:
+            usr_ingredients = [ingredient]
+            cache.set('usr_ingredients', usr_ingredients)
+            return home(None, usr_ingredients)
+        if ingredient not in usr_ingredients:
+            usr_ingredients.append(ingredient)
+        else:
+            usr_ingredients.remove(ingredient)
 
-    return redirect('/')
+        cache.set('usr_ingredients', usr_ingredients)
+        return home(None, usr_ingredients)
 
+    elif request.form['action'] == "Reset":
+        usr_ingredients = []
+        cache.set('usr_ingredients', usr_ingredients)
+
+        return home(None, usr_ingredients)
 
 if __name__ == '__main__':
     app.run()

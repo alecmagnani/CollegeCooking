@@ -77,20 +77,23 @@
   <div class="row content">
     <div class="col-sm-2 sidenav">
       <h4 align="left"> My Ingredients: </h4>
+          {% if usr_ingredients != None %}
 	      {% for ingredient in usr_ingredients %}
 	      <h4 align="left"> {{ingredient}} </h4>
 	      {% endfor %}
+	  {% endif %}
 
 	      <form action="." method="POST">
 		      <input type="text" name="Add Ingredient" size="12">
-		      <input type="submit" name="add" value="Add Ingredient" id="button">
+		      <input type="submit" name="action" value="Add Ingredient" id="button">
+		      <input type="submit" name="action" value="Reset" id="button">
 	      </form>
 
-	      <a href="{{ url_for('home') }}"><button>Reset</button></a>
     </div>
     <div class="col-sm-8 text-left"> 
-	    <h2><center> {{recipe.title}} </center></h2>
+	    <h2><center> <a href="{{recipe.link}}">{{recipe.title}}</a></center></h2>
 	    <p><center> Ingredients: {{recipe.ingredients}} </center></p>
+	    <center><a href="{{ url_for('home') }}"><button>Next</button></a></center>
       <hr>
     </div>
     <div class="col-sm-2 sidenav">

@@ -111,6 +111,8 @@ def jsonparse(json):
 # generates a url containing the search query (if applicable) and all user ingredients from 'ingredients.txt'
 def getIngredientSearchURL(query, ingredients = [], *args):
     url = "http://recipepuppy.com/api?"
+    if ingredients == None:
+        return url
     if len(ingredients) > 0:
         url = url + "i="
         for x in range(0, len(ingredients)):
