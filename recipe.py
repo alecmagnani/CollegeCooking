@@ -1,6 +1,7 @@
 class Recipe:
 
-    recipeCount = 0;
+    recipeCount = 0
+    score = 0
 
     def __init__(self, title, link, ingredients):
         self.title = title
@@ -12,3 +13,6 @@ class Recipe:
         print("Title: " + self.title)
         print("Link: " + self.link)
         print("Ingredients: " + self.ingredients)
+
+    def setScore(self, score):
+        self.score = score

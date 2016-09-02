@@ -139,7 +139,7 @@ def getRandomSearchURL(query):
 # and returns a list of those recipes
 def ingredientSearch(url):
     ingredient_recipes = []
-    pageMin = randint(1, 95)
+    pageMin = randint(1, 15)
     pageMax = pageMin + 5
     for x in range(pageMin, pageMax):
         # the try/except handles the blank pages that sometimes occur
@@ -166,7 +166,7 @@ def randomSearch(url):
     result = urllib.request.urlopen(request)
     json = result.read()
 
-    pageMin = randint(1, 90)
+    pageMin = randint(1, 15)
     pageMax = pageMin + 5
     for x in range(pageMin, pageMax):
         try:
@@ -188,6 +188,27 @@ def randomSearch(url):
 def getRandomRecipe(recipes = [], *args):
     num = randint(0, len(recipes) - 1)
     return recipes[num]
+
+def findBest(recipes = [], *args):
+    # Set placeholder best score at 0
+    best = Recipe(None, None, None)
+    best.setScore(0)
+
+    # For each recipe in the given list, compare the score with the current best
+    # If the recipe is better, make it the new best
+    # If they are the same, randomly either make the new recipe the best or leave the current one
+    for recipe in recipes:
+        if recipe.score > best.score:
+            best = recipe
+        if recipe.score == best.score:
+            coin = randint(0, 1)
+            if coin == 0:
+                best = recipe
+            else:
+                pass
+
+    # Return the best recipe
+    return best
 
 # get the user search query
 def getQuery():

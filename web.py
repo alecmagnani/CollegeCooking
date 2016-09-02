@@ -16,8 +16,20 @@ cache = SimpleCache()
 def home(recipe = None, usr_ingredients = None):
     usr_ingredients = cache.get('usr_ingredients')
     url = whatsfordinner.getIngredientSearchURL(None, usr_ingredients)
+
     recipes = whatsfordinner.ingredientSearch(url)
-    recipe = whatsfordinner.getRandomRecipe(recipes)
+    #Give each recipe a score based on how many ingredients it has in common with the user's list of ingredients
+    if usr_ingredients != None:
+        for recipe in recipes:
+            score = 0
+            for ingredient in usr_ingredients:
+                if ingredient in recipe.ingredients:
+                    score += 1
+            recipe.setScore(score)
+
+        recipe = whatsfordinner.findBest(recipes)
+    else:
+        recipe = whatsfordinner.getRandomRecipe(recipes)
 
     return render_template('webpage.html', recipe=recipe, usr_ingredients=usr_ingredients)
 
