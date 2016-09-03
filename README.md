@@ -9,6 +9,8 @@ A work-in-progress web page written using Flask can be launched using "python we
 
 This program seeks to help the indecisive chef by taking the decision making out of answering the question "What's for Dinner?". It uses the RecipePuppy API to generate recipes either at random, or based on a list of ingredients specified by the user. The user can open the recipe in their browser, and also select the recipe, which generates a shopping list of ingredients not found in their ingredients list.
 
+![Web App](/screenshots/webapp.png?raw=true "Web app displaying a random recipe. Ingredients can be added and removed from the left column")
+
 ![Main Screen](/screenshots/recipe.png?raw=true "Screen after the program has generated a recipe")
 
 ![Ingredients](/screenshots/ingredients.png?raw=true "Add, edit, or remove ingredients from your list")
