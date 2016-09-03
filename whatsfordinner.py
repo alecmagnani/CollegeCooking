@@ -105,6 +105,7 @@ def jsonparse(json):
         link[1] = link[1].replace("\\", "")
 
         recipe = Recipe(title[1], link[1], ingredients[1])
+        # recipe.addThumbnail(link[1])
         recipes.append(recipe)
 
     return recipes

@@ -31,6 +31,7 @@ def home(recipe = None, usr_ingredients = None):
     else:
         recipe = whatsfordinner.getRandomRecipe(recipes)
 
+    # print(recipe.thumbnail)
     return render_template('webpage.html', recipe=recipe, usr_ingredients=usr_ingredients)
 
 @app.route('/', methods=['POST'])

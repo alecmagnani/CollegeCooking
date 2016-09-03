@@ -16,3 +16,6 @@ class Recipe:
 
     def setScore(self, score):
         self.score = score
+
+    def setThumbnail(self, link):
+        self.thumbnail = link
