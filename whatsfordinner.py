@@ -95,7 +95,7 @@ def jsonparse(json):
         recipe = recipe.strip("}")
         recipe = recipe.split( '","' )
         
-        title = recipe[0]
+        title = clean(recipe[0])
         link = recipe[1]
         ingredients = recipe[2]
 
@@ -109,6 +109,13 @@ def jsonparse(json):
         recipes.append(recipe)
 
     return recipes
+
+# Fixes problem where some titles would display with extra characters following a \ (ex: \r\n\t\t\t\r)
+def clean(title):
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    for letter in alphabet:
+        title.strip("\\" + letter)
+    return title
 
 # generates a url containing the search query (if applicable) and all user ingredients from 'ingredients.txt'
 def getIngredientSearchURL(query, ingredients = [], *args):
@@ -141,7 +148,7 @@ def getRandomSearchURL(query):
 # and returns a list of those recipes
 def ingredientSearch(url):
     ingredient_recipes = []
-    pageMin = randint(1, 15)
+    pageMin = randint(1, 70)
     pageMax = pageMin + 5
     for x in range(pageMin, pageMax):
         # the try/except handles the blank pages that sometimes occur
@@ -168,7 +175,7 @@ def randomSearch(url):
     result = urllib.request.urlopen(request)
     json = result.read()
 
-    pageMin = randint(1, 15)
+    pageMin = randint(1, 70)
     pageMax = pageMin + 5
     for x in range(pageMin, pageMax):
         try:
